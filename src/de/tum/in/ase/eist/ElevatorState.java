@@ -1,5 +1,6 @@
 package de.tum.in.ase.eist;
 
+// TODO: state interface (abstract class with abstract methods)
 public abstract class ElevatorState {
 
 	// this means that a new floor was requested (a user pressed the elevator button)
