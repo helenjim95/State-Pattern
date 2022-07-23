@@ -1,44 +1,44 @@
 package de.tum.in.ase.eist;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
-	private int currentFloor;
-	private List<Integer> pool = new ArrayList<Integer>();
 	private ElevatorState state;
 
+	private int currentFloor;
+
+	private final List<Integer> pool;
 
 	public Controller(int currentFloor) {
-		this.state = new Idle();
-	}
-
-	public void request(int floor) {
-		pool.add(floor);
-		state = new Moving();
-	}
-
-	public void signal(int floor) {
-		if (pool.isEmpty()) {
-			state = new Idle();
-		}
-		state.signal(floor, this);
+		this.currentFloor = currentFloor;
+		state = new IdleState();
+		pool = new ArrayList<>();
 	}
 
 	public ElevatorState getState() {
-		return this.state;
+		return state;
 	}
 
-	public void setState(ElevatorState newState) {
-		this.state = newState;
+	public void setState(ElevatorState state) {
+		this.state = state;
 	}
 
-	public int getNexthop() {
-		if (this.pool.size() > 0) {
-			return this.pool.get(0);
-		} else {
-			return -1;
+	public void request(int floor) {
+		if (floor != currentFloor && !pool.contains(floor)) {
+			pool.add(floor);
 		}
+		state.request(floor, this);
+	}
+
+	public void signal(int floor) {
+		currentFloor = floor;
+		state.signal(floor, this);
+	}
+
+	public List<Integer> getPool() {
+		return pool;
 	}
 
 	public int getCurrentFloor() {
@@ -49,11 +49,10 @@ public class Controller {
 		this.currentFloor = currentFloor;
 	}
 
-	public List<Integer> getPool() {
-		return pool;
-	}
-
-	public void setPool(List<Integer> pool) {
-		this.pool = pool;
+	public int getNextStop() {
+		if (pool.isEmpty()) {
+			return -1;
+		}
+		return pool.get(0);
 	}
 }
