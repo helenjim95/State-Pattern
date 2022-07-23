@@ -9,7 +9,7 @@ public class Moving extends ElevatorState {
     @Override
     public void signal(int floor, Controller controller) {
         if (controller.getPool().get(0) == floor) {
-            controller.setState(new stop());
+            controller.setState(new Stop());
             controller.getPool().remove(0);
         }
         // keep moving;

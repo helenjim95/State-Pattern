@@ -10,17 +10,17 @@ public class Controller {
 
 
 	public Controller(int currentFloor) {
-		this.state = new idle();
+		this.state = new Idle();
 	}
 
 	public void request(int floor) {
 		pool.add(floor);
-		state = new moving();
+		state = new Moving();
 	}
 
 	public void signal(int floor) {
 		if (pool.isEmpty()) {
-			state = new idle();
+			state = new Idle();
 		}
 		state.signal(floor, this);
 	}
